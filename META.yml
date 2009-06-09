@@ -1,0 +1,24 @@
+---
+abstract: 'Provides OpenID authentication for your jifty app'
+author:
+  - 'Alex Vandiver, Cornelius  <cornelius.howl {at} gmail.com >'
+distribution_type: module
+generated_by: 'Module::Install version 0.76'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Jifty-Plugin-OpenID
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  Cache::FileCache: 0
+  Jifty: 0
+  LWPx::ParanoidAgent: 0
+  Net::OpenID::Consumer: 0
+  Test::OpenID::Server: 0
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.10
