@@ -47,7 +47,7 @@ on 'openid/verify_and_link' => run {
         }
         else {
             $user->user_object->link_to_openid( $openid );
-            $result->message(_("The OpenID '$openid' has been linked to your account."));
+            $result->message(_("The OpenID '%1' has been linked to your account.",$openid));
         }
     }
     redirect '/';
@@ -80,11 +80,33 @@ on 'openid/verify_and_login' => run {
             # User needs to create account still
             Jifty->web->session->set( openid => $openid );
             Jifty->log->info("got openid: $openid");
+            my $Mapping = Jifty->web->session->get('ax_mapping');
+            if ($Mapping) {
+                # get ns, google set is own ns, usually ext1
+                # this need to be provided by csr
+                my $signed = get('openid.signed');
+                my $ns = $1 if $signed =~ m/ns\.(\w+?),/;
+                # get values
+                my $AX=();
+                foreach my $param ( split ',', Jifty->web->session->get('ax_values') ) {
+                    $AX->{$param} = get('openid.'.$ns.'.'.$param);
+                };
+                # map values
+                foreach my $param (keys %$Mapping ) {
+                    my $val = $Mapping->{$param};
+                    $val =~ s/(value\.\w+(\.\d)?)/$AX->{$1}/g;
+                    $Mapping->{$param} = $val;
+                };
+                $Mapping->{openid} = $openid;
+            };
             my $nick = get('openid.sreg.nickname');
             if ( $nick ) {
                 redirect( Jifty::Web::Form::Clickable->new( url => '/openid/create', parameters => { 
                     nickname => $nick, 
                     openid => $openid } ));
+            }
+            elsif ($Mapping) {
+                redirect( Jifty::Web::Form::Clickable->new( url => '/openid/create', parameters => $Mapping ) );
             }
             else {
                 redirect( Jifty::Web::Form::Clickable->new( url => '/openid/create' ) );
