@@ -9,6 +9,7 @@ inc/Module/Install/Fetch.pm
 inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
+inc/Module/Install/Share.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 lib/Jifty/Plugin/OpenID.pm
@@ -37,6 +38,3 @@ t/TestApp/lib/TestApp/View.pm
 t/TestApp/t/00-model-User.t
 t/TestApp/t/00-openid-test.t
 t/TestApp/t/01-ax-test.t
-t/TestApp/testapp
-t/TestApp/var/jifty-server-parent.pid
-t/TestApp/var/jifty-server.pid
